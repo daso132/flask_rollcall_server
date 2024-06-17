@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> WELCOME 
+    {% if acc.teacher  %}
+       {{acc.student[0].name}} 
+    {% else %}
+        {{acc.name}}
+    {% endif %}
+    !!!
+</h1>
+<div class = "c1">
+    <img src="/static/9706583.png" alt="app icon" width="150" height="150">
+    <div>
+        <p>tên sinh viên: {{student.name}}</p>
+    </div>
+    <div>
+        <p>mã số sinh viên: {{student.MSSV}}</p>
+    </div>
+    <div>
+        <p>lớp học: {{student.classId}}</p>
+    </div>
+    <div>
+        <p>id vân tay: {{student.fingerPrintId}}</p>
+    </div>
+    {% if SH.permissionList["CHANGE::SELF::PASSWORD"] %}
+        <a href="/{{SH.accName}}/changePassworld" class="button1">đổi mật khẩu</a>
+    {% endif %}
+</div>
+<h3>nhật ký điểm danh:</h3>
+<table>
+    <tr>
+        <th>ngày</th>
+        <th>giờ</th>
+    </tr>
+    {% for rollcall in rollcalls %}
+    <tr>
+        <td>{{ rollcall.date_create.strftime('%d / %m / %Y') }}</td>
+        <td>{{ rollcall.date_create.strftime('%Hh : %Mp : %Ss') }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

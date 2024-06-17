@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<h1>STUDENT CREATER PAGE</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.MSSV}}
+    {{form.name}}
+    {{form.FingerId}}
+    {{form.className}}
+    {{form.birthDay}}
+    {{form.acclinking}}
+    {{form.submit}}
+</form>
+<ul class="error">
+{% if form.MSSV.errors %}
+    {% for error in form.MSSV.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.name.errors %}
+    {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.birthDay.errors %}
+    {% for error in form.birthDay.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.acclinking.errors %}
+    {% for error in form.acclinking.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.className.errors %}
+    {% for error in form.className.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.FingerId.errors %}
+    {% for error in form.FingerId.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+</ul>
+{% endblock %}

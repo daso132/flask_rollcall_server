@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<h1>REGISTER PAGE</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.name}}
+    {{form.passworld}}
+    {{form.retypePassworld}}
+    {{form.permissionLevel}}
+    {{form.submit}}
+</form>
+<ul class="error">
+{% if form.name.errors %}
+    {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.passworld.errors %}
+    {% for error in form.passworld.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+</ul>
+{% endblock %}

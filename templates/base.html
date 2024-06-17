@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='CSS/main.css') }}" >
+    {% block head %} {% endblock %}
+</head>
+<body>
+    <div class="higherBox">
+        <div class = "leftBox">
+            <div class="imageBox">
+                <img src="/static/Icon_1.png" alt="app icon" width="40" height="40">
+            </div>
+            <a href="/studentPage">
+                <div class="btn-one">
+                    <p>Student</p>
+                </div>
+            </a>
+            <a href="/teacherPage">
+                <div class="btn-one">
+                    <p>Teacher</p>
+                </div>
+            </a>
+            <a href="/classPage">
+                <div class="btn-one">
+                    <p>Class</p>
+                </div>
+            </a>
+            <a href="/fingerPrintPage">
+                <div class="btn-one">
+                    <p>fingerPrint </p>
+                </div>
+            </a>
+            <div class="btn-one">
+                <p>Device</p>
+            </div>
+            <a href="/rollcall">
+                <div class="btn-one">
+                    <p>Rollcall</p>
+                </div>
+            </a>
+            <a href="/register">
+                <div class="btn-one">
+                    <p>New ACC</p>
+                </div>
+            </a>
+            
+        </div>
+        {% if SH.isLogOn()%}
+        <div class = "rightBox">
+            <a href = "/logout">
+                <div class="glow-on-hover">
+                    <p>Log out</p>
+                </div>
+            </a>
+        </div>
+        <div class = "rightBox">
+            <a href = "/Profile/{{SH.accName}}">
+                <div class="glow-on-hover">
+                    <p>{{SH.accName}}</p>
+                </div>
+            </a>
+        </div>
+        {% else %}
+        <div class = "rightBox">
+            <a href = "/login">
+                <div class="glow-on-hover">
+                    <p>Login</p>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    {% block body %} {% endblock %}
+</body>
+</html>

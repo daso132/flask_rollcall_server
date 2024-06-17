@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block head %} 
+
+{% endblock %}
+
+{% block body %} 
+<h1>LOGIN PAGE</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.name}}
+    {{form.passworld}}
+    {{form.submit}}
+</form>
+{% endblock %}

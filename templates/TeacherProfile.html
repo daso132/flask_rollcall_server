@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> WELCOME 
+    {% if acc.teacher  %}
+       {{acc.teacher[0].name}} 
+    {% else %}
+        {{acc.name}}
+    {% endif %}
+    !!!
+</h1>
+<div class = "c1">
+    <img src="/static/9706583.png" alt="app icon" width="150" height="150">
+    <div>
+        <p>id giáo viên: {{Teacher.ID}}</p>
+    </div>
+    <div>
+        <p>họ và tên: {{Teacher.name}}</p>
+    </div>
+    <div>
+        <p>lớp học: </p>
+        {% if Teacher.classid %}
+            <p>
+                {% for ci in Teacher.classid %}
+                    {{ ci.name }}
+                    <br>
+                {% endfor %}
+            </p>
+        {% else %}
+                    <p>no class linked</p>
+        {% endif %}
+    </div>
+    {% if SH.permissionList["CHANGE::SELF::PASSWORD"] %}
+        <a href="/{{SH.accName}}/changePassworld" class="button1">đổi mật khẩu</a>
+    {% endif %}
+</div>
+<h3>kết quả điểm danh theo lớp:</h3>
+<div class = "c3">
+    {% for rollcallbyclass in rollcalls %}
+
+    {% if rollcallbyclass[1] >= rollcallbyclass[2].number %}
+    <div class = "full">
+    {% elif rollcallbyclass[1] > rollcallbyclass[2].number * 0.5 %}
+    <div class = "overHalf">
+    {% else %}
+    <div class = "empty">
+    {% endif %}
+        <p style="font-size:18px;">lớp: {{rollcallbyclass[2].name}}; hiện diện: {{ rollcallbyclass[1]}} / {{ rollcallbyclass[2].number }}</p>
+        <table>
+            <tr>
+                <th>tên sinh viên</th>
+                <th>mã số sinh viên</th>
+                <th>thời gian điểm danh</th>
+            </tr>
+            {% for rollcall in rollcallbyclass[0] %}
+            <tr>
+                <td>{{ rollcall.student_name }}</td>
+                <td>{{ rollcall.student_MSSV }}</td>
+                <td>{{  rollcall.date_create.strftime('%d / %m / %Y')}},  {{rollcall.date_create.strftime('%Hh : %Mp : %Ss') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
+</div>  
+{% endblock %}

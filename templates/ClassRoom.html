@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH LỚP HỌC </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>tên lớp</th>
+            <th>khoa</th>
+            <th>giáo viên chủ nhiệm</th>
+            <th>sỉ số lớp học</th>
+            <th>tùy chình</th>
+        </tr>
+        {% for ClassRom in ClassRoms %}
+            <tr>
+                <td>{{ ClassRom.name }}</td>  
+                <td>{{ ClassRom.department }}</td> 
+                <td>{{ ClassRom.Teacher }}</td> 
+                <td>{{ ClassRom.number }}</td>
+                <td>
+                    <a href = "/deleteSTU/class/{{ClassRom.name}}">xóa</a>
+                    <br>
+                    <a href = "/updateSTU/class/{{ClassRom.name}}">sửa</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+<a href = '/newClass'>click here to spawn a brain new class !!!!</a>
+{% endblock %}

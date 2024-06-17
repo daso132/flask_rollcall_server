@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<h1>STUDENT CREATER PAGE</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.name(value=class_to_update.name)}}
+    {{form.department(value=class_to_update.department)}}
+    {{form.teacher(value=class_to_update.Teacher)}}
+    {{form.submit(value = "hoàn thành" )}}
+</form>
+<ul class="error">
+{% if form.name.errors %}
+    {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.department.errors %}
+    {% for error in form.department.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.teacher.errors %}
+    {% for error in form.teacher.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+</ul>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> kiểm tra hoạt động code </h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.stringdata}}
+    {{form.submit}}
+</form>
+<p>{{ state }}</p> 
+<br>
+<a href = '/newClass'>click here to spawn a brain new class !!!!</a>
+{% endblock %}

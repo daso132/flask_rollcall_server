@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH SINH VIÊN TỒN TẠI </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>MSSV</th>
+            <th>Họ và tên</th>
+            <th>lớp học</th>
+            <th>năm sinh</th>
+            <th>mã vân tay</th>
+            <th>tên tài khoản</th>>
+            <th>tùy chình</th>
+        </tr>
+        {% for Student in Students %}
+            <tr>
+                <td>{{ Student.MSSV }}</td>
+                <td>{{ Student.name }}</td>  
+                <td>{{ Student.classId }}</td> 
+                <td>{{ Student.birthDay }}</td>
+                <td>{{ Student.fingerPrintId }}</td>
+                <td>{{ Student.Accout_name }}</td>
+                <td>
+                    <a href = '/deleteSTU/student/{{Student.MSSV}}'>xóa</a>
+                    <br>
+                    <a href = '/updateSTU/student/{{Student.MSSV}}'>sửa</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+<a href = '/newStudent'>tạo sinh viên mới từ hư không</a>
+{% endblock %}

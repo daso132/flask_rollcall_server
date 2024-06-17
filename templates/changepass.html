@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<h1>ĐỔI MẬT KHẨU</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.oldPass}}
+    {{form.newPass}}
+    {{form.retypePass}}
+    {{form.submit}}
+</form>
+<ul class="error">
+{% if form.oldPass.errors %}
+    {% for error in form.oldPass.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.newPass.errors %}
+    {% for error in form.newPass.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+</ul>
+{% endblock %}

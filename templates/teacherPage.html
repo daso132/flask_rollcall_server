@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH GIÁO VIÊN </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>tên giáo viên</th>
+            <th>lớp chủ nhiệm</th>
+            <th>tài khoản liên kết</th>
+            <th>tùy chỉnh</th>
+        </tr>
+        {% for Teacher in Teachers %}
+            <tr>
+                <td>{{ Teacher.ID }}</td>
+                <td>{{ Teacher.name }}</td>
+                {% if Teacher.classid %}
+                    <td>
+                        {% for ci in Teacher.classid %}
+                            {{ ci.name }}
+                            <br>
+                        {% endfor %}
+                    </td>
+                {% else %}
+                    <td>no class linked</td>
+                {% endif %}
+                {% if Teacher.Accout_name %}
+                    <td>{{ Teacher.Accout_name}}</td>
+                {% else %}
+                    <td>no accout linked</td>
+                {% endif %}
+                <td>
+                    <a href = "/deleteSTU/teacher/{{Teacher.ID}}">xóa</a>
+                    <br>
+                    <a href = "/updateSTU/teacher/{{Teacher.ID}}">sửa</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+<a href = '/newTeacher'>tạo giáoviên mới</a>
+{% endblock %}

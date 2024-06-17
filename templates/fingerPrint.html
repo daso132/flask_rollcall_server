@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH tất cả dấu vân tay </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>mẫu vân tay</th>
+            <th>mô tả</th>
+            <th>sinh viên liên kết</th>
+            <th>tùy chình</th>
+        </tr>
+        {% for FingerPrint in FingerPrints %}
+            <tr>
+                <td>{{ FingerPrint.ID }}</td>
+                <td>{{ FingerPrint.fingerPrintTemplate }}</td>
+                <td>{{ FingerPrint.descreption }}</td>
+                {% if FingerPrint.student %}
+                    <td>
+                        {% for stu in FingerPrint.student %}
+                            {{ stu.MSSV }}
+                            <br>
+                        {% endfor %}
+                    </td>
+                {% else %}
+                    <td>no student linked</td>
+                {% endif %}
+                <td><a href = "/deleteSTU/finger/{{FingerPrint.ID}}"> xóa </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+{% endblock %}

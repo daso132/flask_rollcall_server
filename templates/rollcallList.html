@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH ĐIỂM DANH </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>MSSV</th>
+            <th>tên sinh viên</th>
+            <th>lớp</th>
+            <th>thời gian</th>
+        </tr>
+        {% for RollCall in RollCalls %}
+            <tr>
+                <td>{{ RollCall.ID }}</td>
+                <td>{{ RollCall.student_MSSV }}</td>
+                <td>{{ RollCall.student_name }}</td>
+                <td>{{ RollCall.student_class }}</td>
+                <td>{{ RollCall.date_create}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+{% endblock %}

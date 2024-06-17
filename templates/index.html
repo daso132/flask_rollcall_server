@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH SINH VIÊN ĐÃ BÁO DANH </h1>
+
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Họ và tên</th>
+            <th>lớp học</th>
+            <th>Thời gian</th>
+            <th>Tùy chỉnh</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.studentName }}</td>  
+                <td>{{ task.className }}</td> 
+                <td>{{ task.date_create.date() }}</td>
+                <td>
+                    <a href = '/delete/{{task.id}}'> xóa </a>
+                    <br>
+                    <a href = '/update/{{task.id}}'>Đổi tên</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <form action = "/" method = "POST">
+        <input type="text" name = "content" id = "content">
+        <input type="submit" value="điểm danh">
+    </form>
+</div>
+<br>
+<a href = '/deleteAll'>xóa tất cả</a>
+{% endblock %}
