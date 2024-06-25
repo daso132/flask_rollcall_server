@@ -119,10 +119,13 @@ class create_teacher_form(FlaskForm):
     def validate_acclinking(self, acclinking):
         exitting_acc = Accout.query.filter_by(name = acclinking.data).first()
         acc_type = Accout.query.filter_by(name = acclinking.data).first().type 
+        already_linked = Accout.query.filter_by(name = acclinking.data).first().teacher
         if not exitting_acc:
             raise ValidationError("kiếm đâu ra cái tên tài khoản vậy, chưa đăng ký đúng ko?")
         elif acc_type != "giáo viên":
             raise ValidationError("tài khoản không dành cho giáo viên")
+        elif already_linked:
+            raise ValidationError("tài khoản này đã được sử dụng cho một giáo khác")
         
 class codetest(FlaskForm):
     stringdata = StringField(validators = [input_required(), length(min=0, max=256)], render_kw={"placeholder":"viết cái j đó"})
@@ -134,7 +137,6 @@ class sessionHandle():
     accRight = ""
     permissionList = {
         "SEE::MAINPAGE":False,
-#        "SEE::DEVICEPAGE":False,
         "SEE::REGISTERPAGE":False,
         "SEE::CLASSPAGE":False,
         "SEE::STUDENTPAGE":False,
@@ -145,8 +147,6 @@ class sessionHandle():
         "CREATE::STUDENT":False,
         "CREATE::TEACHER":False,
         "CREATE::CLASS":False,
-#        "CREATE::MANAGER":False,
-#        "CHANGE::SELF::USERNAME":False,
         "CHANGE::SELF::PASSWORD":False,
         "CHANGE::STUDENT::USERNAME":False,
         "CHANGE::STUDENT::PASSWORD":False,
@@ -156,7 +156,6 @@ class sessionHandle():
         "CHANGE::MANAGERPAGE::PASSWORD":False,
         "CHANGE::ACCRIGHT":False,
     }
-    accTypeToCreate = []
     def update(self):
         self.accName = session["user"]
         self.accRight = session["right"]
@@ -191,6 +190,7 @@ class sessionHandle():
                 self.permissionList.update({
                     "SEE::PROFILE":True,
                     "SEE::MAINPAGE":True,
+                    "CHANGE::SELF::PASSWORD":True,
                 })
             case "giáo viên":
                 self.permissionList.update({
@@ -414,7 +414,7 @@ def handleCommand(commad1,param):
         case  'FINGERNEW':
             if(param[2] != ""):
                 new_FINGER = FingerPrint(ID = int(param[0]),fingerPrintTemplate = param[1], descreption = param[2])
-                handleState = "dấu vân tay được đăng ký với ID:" + param[0] + ", mẫu vân tay\n: " + param[1] + "\n mô tả: " + param[2]
+                handleState = "ID:" + param[0] + ", temp: " + param[1] + ", des: " + param[2]
             else:
                 new_FINGER = FingerPrint(fingerPrintTemplate = param[0], descreption = param[1])
                 handleState = "dấu vân tay được đăng ký với mẫu vân tay: " + param[0] + "\n mô tả: " + param[1]
@@ -422,7 +422,7 @@ def handleCommand(commad1,param):
             db.session.commit()
         #điểm danh (mã vân tay)
         case  'ROLLCALL':#<ROLLCALL>1
-            stu = Student.query.filter_by(fingerPrintId = param[0]).first_or_404()
+            stu = Student.query.filter_by(fingerPrintId = param[0]).first()
             if stu:
                 new_RollCall = RollCall(student = stu, student_name = stu.name, student_class = stu.classId)
                 db.session.add(new_RollCall)
@@ -473,6 +473,7 @@ def handleCommand(commad1,param):
         case _:
             handleState = "unknow command"
     return handleState
+
 
 @sock.route('/echo')
 def echo(ws):
@@ -544,9 +545,9 @@ def login():
 
 @app.route('/register', methods = ['POST','GET'])
 def register():
-#    if SH.isLogOn():
-#        if SH.permissionList["SEE::REGISTERPAGE"] == False:
- #           return redirect('/NO PERMISSON')
+    if SH.isLogOn():
+        if SH.permissionList["SEE::REGISTERPAGE"] == False:
+            return redirect('/NO PERMISSON')
         form = Create_Accout_form()
         if form.validate_on_submit():
             encryPassWorld = bcrypt.generate_password_hash(form.passworld.data)
@@ -556,8 +557,8 @@ def register():
             return redirect('/login')
             
         return render_template('new_accout.html', form = form, SH = SH)
-#    else:
- #       return redirect('/login')
+    else:
+        return redirect('/login')
 
 @app.route('/<string:userName>/changePassworld', methods = ['POST','GET'])
 def changePassworld(userName):
