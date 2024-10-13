@@ -1,7 +1,7 @@
 # set-Executionpolicy -scope process -Executionpolicy Bypass  
 # env\Scripts\activate
 import random
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import datetime
 from flask_sock import Sock
@@ -10,6 +10,8 @@ from wtforms import StringField, PasswordField, IntegerField, SubmitField, DateF
 from wtforms.validators import input_required, length, ValidationError
 from flask_bcrypt import Bcrypt
 from sqlalchemy import func
+import base64
+import os
 
 #----------------------------------------INIT AREA------------------------------------------
 
@@ -127,6 +129,26 @@ class create_teacher_form(FlaskForm):
 class codetest(FlaskForm):
     stringdata = StringField(validators = [input_required(), length(min=0, max=256)], render_kw={"placeholder":"viết cái j đó"})
     submit = SubmitField("xem kết quả")
+
+
+
+
+class sessionHandleSimple():
+    accname = ""
+    def logout(self):
+        self.accName = ""
+    def isLogOn(self):
+        try:
+            if self.accName != "":
+                acc = Accout.query.filter_by(name = self.accName).first
+                if acc:
+                    return True
+                else:
+                    return False
+        except:
+            return False
+
+
 
 
 class sessionHandle():
@@ -291,6 +313,56 @@ class Accout(db.Model):
     teacher = db.relationship('Teacher', backref = 'accout')
     def __repr__(self):
         return f'<Accout: {self.name}>'
+
+
+
+class AccoutManager(db.Model):
+    __tablename__ = "accoutManager"
+    name = db.Column(db.String(128), nullable = False, primary_key = True, unique = True)
+    password = db.Column(db.String(128), nullable = False)
+    def __repr__(self):
+        return f'<Accout: {self.name}>'
+
+
+class RollcallHistory(db.model):
+    __tablename__ = "rollcallhistory"
+    date_create = db.Column(db.DateTime, default = datetime.now(tz=None))
+    fingerId = db.column(db.String(10), db.ForeignKey("student.MSSV"), nullable = True)
+    def __repr__(self):
+        return f'<Accout: {self.name}>'
+
+
+
+class Student1(db.Model):
+    __tablename__ = "student"
+    MSSV = db.Column(db.String(10), primary_key = True, nullable = False, unique = True)
+    name = db.Column(db.String(128), nullable = False)
+    RFID = db.Column(db.String(128), db.ForeignKey("rfid.id"))
+    rollcallHistory = db.relationship('RollcallHistory', backref = 'student')
+    def __repr__(self):
+        return f'<Student: {self.name}>'
+
+
+class RFID(db.Model):
+    __tablename__ = "rfid"
+    id = db.Column(db.String(16), primary_key = True, nullable = False, unique = True)
+    fingerId = db.column(db.Integer, db.ForeignKey("fingerPrintData.fingerId"), nullable = True)
+    student1 = db.relationship('Student1', backref = 'rfid')
+    def __repr__(self):
+        return f'<Accout: {self.name}>'
+
+
+
+class FingerPrintData(db.model):
+    __tablename__ = "fingerPrintData"
+    fingerId = db.Column(db.Integer, primary_key = True, nullable = False, unique = True)
+    FingerPrintTemplate = db.column(db.String(1024),nullable = True)
+    RFID = db.relationship('RFID', backref = 'fingerPrintData')
+    def __repr__(self):
+        return f'<Accout: {self.name}>'
+
+
+
 
 
 class ClassRom(db.Model):
@@ -486,6 +558,69 @@ def echo(ws):
 
 
 
+@app.route('/upload_fingerprint', methods=['POST'])
+def upload_fingerprint():
+    try:
+        data = request.json
+        fingerprint_base64 = data.get('fingerprint')
+        filename=data.get('filename')
+        
+        if not fingerprint_base64 or not filename:
+            return jsonify({'error': 'Fingerprint data or filename is missing'}), 400
+        
+        # Giai ma base64 du lieu nhan
+        fingerprint_data = base64.b64decode(fingerprint_base64)
+
+        # tim id rong de tao file
+        number = 1
+        filepath = "fingerFile/" + filename + "/" + number + ".bin"
+        while os.path.exists(filepath):
+            number += 1
+            filepath = "fingerFile/" + filename + "/" + number + ".bin"
+
+        #luu data ra file
+        with open(filepath, 'wb') as f:
+            f.write(fingerprint_data)
+
+            
+        return jsonify({'message': 'Fingerprint data received successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+
+    
+
+@app.route('/download_fingerprint', methods=['GET'])
+def download_fingerprint():
+    try:        
+        file_name = request.args.get('file')
+        file_id = request.args.get('fileId')
+        filepath = "fingerFile/" + file_name + "/" + file_id + ".bin"
+
+
+        if not os.path.exists(filepath):
+            return jsonify({'error': 'Fingerprint data not found'}), 404
+        response=send_file(filepath, as_attachment=True)        
+        return response
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/check_next_finger_id', methods=['GET'])
+def check_next_finger_id():
+    try:        
+        file_name = request.args.get('file')
+        file_id = request.args.get('fileId')
+        filepath = "fingerFile/" + file_name + "/" + file_id + ".bin"
+
+
+        if not os.path.exists(filepath):
+            return jsonify({'error': 'Fingerprint data not found'}), 404
+        response=send_file(filepath, as_attachment=True)        
+        return response
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 
