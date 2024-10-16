@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+    <h1> DANH SÁCH SINH VIÊN </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>MSSV</th>
+            <th>Họ và tên</th>
+            <th>RFID</th>
+            <th>action</th>
+        </tr>
+        {% for Student in Students %}
+            <tr>
+                <td>{{ Student.MSSV }}</td>
+                <td>{{ Student.name }}</td>  
+                <td>
+                    {% for s in Student.RFID%}
+                    {{ s.id }}
+                    <br>
+                    {% endfor %}
+                </td> 
+                <td>
+                    <a href = '/deleteThing/student/{{Student.MSSV}}'>xóa</a>
+                    <br>
+                    <a href = '/updateThing/student/{{Student.MSSV}}'>sửa</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+<a href = '/CreateNewStudent'>tạo sinh viên mới</a>
+{% endblock %}

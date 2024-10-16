@@ -13,37 +13,24 @@
             <div class="imageBox">
                 <img src="/static/Icon_1.png" alt="app icon" width="40" height="40">
             </div>
-            <a href="/studentPage">
+            <a href="/fingerPrintPage1">
+                <div class="btn-one">
+                    <p>Finger</p>
+                </div>
+            </a>
+            <a href="/RFIDPage">
+                <div class="btn-one">
+                    <p>RFID</p>
+                </div>
+            </a>
+            <a href="/pageStudent">
                 <div class="btn-one">
                     <p>Student</p>
                 </div>
             </a>
-            <a href="/teacherPage">
+            <a href="/historyPage">
                 <div class="btn-one">
-                    <p>Teacher</p>
-                </div>
-            </a>
-            <a href="/classPage">
-                <div class="btn-one">
-                    <p>Class</p>
-                </div>
-            </a>
-            <a href="/fingerPrintPage">
-                <div class="btn-one">
-                    <p>fingerPrint </p>
-                </div>
-            </a>
-            <div class="btn-one">
-                <p>Device</p>
-            </div>
-            <a href="/rollcall">
-                <div class="btn-one">
-                    <p>Rollcall</p>
-                </div>
-            </a>
-            <a href="/register">
-                <div class="btn-one">
-                    <p>New ACC</p>
+                    <p>History</p>
                 </div>
             </a>
             
@@ -56,16 +43,9 @@
                 </div>
             </a>
         </div>
-        <div class = "rightBox">
-            <a href = "/Profile/{{SH.accName}}">
-                <div class="glow-on-hover">
-                    <p>{{SH.accName}}</p>
-                </div>
-            </a>
-        </div>
         {% else %}
         <div class = "rightBox">
-            <a href = "/login">
+            <a href = "/login1">
                 <div class="glow-on-hover">
                     <p>Login</p>
                 </div>

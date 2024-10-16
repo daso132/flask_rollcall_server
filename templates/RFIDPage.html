@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH RFID </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>RFID</th>
+            <th>fingerId</th>
+            <th>học sinh</th>
+            <th>tùy chình</th>
+        </tr>
+        {% for RFID in RFIDs %}
+            <tr>
+                <td>{{ RFID.id }}</td>
+                <td>
+                    {% for f in RFID.fingerId %}
+                        {{ f.fingerId }},
+                    {% endfor %}
+                </td>
+                {% if RFID.student_data %}
+                    <td>
+                        {{ RFID.student_data }}
+                        <br>
+                    </td>
+                {% else %}
+                    <td>no student linked</td>
+                {% endif %}
+                <td><a href = "/deleteThing/RFID/{{RFID.id}}"> xóa </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> DANH SÁCH vân tay </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>mẫu vân tay</th>
+            <th>RFID</th>
+            <th>tùy chình</th>
+        </tr>
+        {% for FingerPrint in FingerPrints %}
+            <tr>
+                <td>{{ FingerPrint.fingerId }}</td>
+                <td>{{ FingerPrint.FingerPrintTemplate }}</td>
+                {% if FingerPrint.rfid.id %}
+                    <td>
+                        {{ FingerPrint.rfid.id }}
+                        <br>
+                    </td>
+                {% else %}
+                    <td>no rfid linked</td>
+                {% endif %}
+                <td><a href = "/deleteThing/finger/{{FingerPrint.fingerId}}"> xóa </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+{% endblock %}

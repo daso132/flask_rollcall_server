@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1> lịch sử ĐIỂM DANH </h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>thời gian</th>
+            <th>MSSV</th>
+            <th>tên sinh viên</th>
+            
+        </tr>
+        {% for h in historyList %}
+            <tr>
+                <td>{{ h.id }}</td>
+                <td>{{ h.date_create}}</td>
+                <td>{{ h.studentdata }}</td>
+                <td>{{ h.studentData.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+{% endblock %}

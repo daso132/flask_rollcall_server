@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<h1>STUDENT UPDATE</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    {{form.MSSV(value=student_to_update.MSSV)}}
+    {{form.name(value=student_to_update.name)}}
+    {{form.RFID(value=student_to_update.RFID.id)}}
+    {{form.submit(value = "hoàn thành" )}}
+</form>
+<ul class="error">
+</ul>
+{% endblock %}
