@@ -7,14 +7,16 @@
 
 
 {% block body %} 
-<h1> DANH SÁCH vân tay </h1>
+<h1> LIST OF FINGERPRINT </h1>
 <div class = "content"> 
     <table>
         <tr>
             <th>ID</th>
-            <th>mẫu vân tay</th>
+            <th>Fingerprint Template</th>
             <th>RFID</th>
-            <th>tùy chình</th>
+            {% if SH.isLogOn() %}
+            <th>Option</th>
+            {% endif %}
         </tr>
         {% for FingerPrint in FingerPrints %}
             <tr>
@@ -28,7 +30,13 @@
                 {% else %}
                     <td>no rfid linked</td>
                 {% endif %}
-                <td><a href = "/deleteThing/finger/{{FingerPrint.fingerId}}"> xóa </td>
+                {% if SH.isLogOn() %}
+                <td>
+                    <a href = "/deleteThing/finger/{{FingerPrint.fingerId}}">
+                    <button class="button-24" role="button">Delete</button>
+                    </a>
+                </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>

@@ -7,14 +7,16 @@
 
 
 {% block body %} 
-<h1> DANH SÁCH RFID </h1>
+<h1> LIST OF RFID </h1>
 <div class = "content"> 
     <table>
         <tr>
             <th>RFID</th>
-            <th>fingerId</th>
-            <th>học sinh</th>
-            <th>tùy chình</th>
+            <th>fingerprint Id</th>
+            <th>Student Name</th>
+            {% if SH.isLogOn() %}
+            <th>Option</th>
+            {% endif %}
         </tr>
         {% for RFID in RFIDs %}
             <tr>
@@ -32,7 +34,13 @@
                 {% else %}
                     <td>no student linked</td>
                 {% endif %}
-                <td><a href = "/deleteThing/RFID/{{RFID.id}}"> xóa </td>
+                {% if SH.isLogOn() %}
+                <td>
+                    <a href = "/deleteThing/RFID/{{RFID.id}}">
+                        <button class="button-24" role="button">Delete</button>
+                    </a>
+                </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>

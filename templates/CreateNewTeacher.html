@@ -2,28 +2,21 @@
 
 {% block body %} 
 
-<h1>STUDENT CREATER PAGE</h1>
+<h1>Teacher CREATER PAGE</h1>
 <form method="POST" action="">
     {{form.hidden_tag()}}
-    {{form.MSSV}}
     {{form.name}}
-    {{form.Class}}
-    {{form.RFID}}
+    {{form.id}}
     {{form.submit}}
 </form>
 <ul class="error">
-{% if form.MSSV.errors %}
-    {% for error in form.MSSV.errors %}
-        <li>{{ error }}</li>
-    {% endfor %}
-{% endif %}
 {% if form.name.errors %}
     {% for error in form.name.errors %}
         <li>{{ error }}</li>
     {% endfor %}
 {% endif %}
-{% if form.Class.errors %}
-    {% for error in form.name.errors %}
+{% if form.id.errors %}
+    {% for error in form.teacher.errors %}
         <li>{{ error }}</li>
     {% endfor %}
 {% endif %}

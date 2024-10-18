@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+
+
+{% block body %} 
+<h1>list of subjects</h1>
+<div class = "content"> 
+    <table>
+        <tr>
+            <th>Subject id</th>
+            <th>Subject name</th>
+            <th>Teacher</th>
+            <th>student list</th>
+            {% if SH.isLogOn() %}
+            <th>Option</th>
+            {% endif %}
+        </tr>
+        {% for Class in classes %}
+            <tr>
+                <td>{{ Class.id }}</td>  
+                <td>{{ Class.name }}</td>  
+                <td>{{ Class.teacherId }}</td> 
+                {% if Class.student %}
+                     <td>
+                       {% for s in Class.student %}
+                       {{ s.MSSV }}
+                       <br>
+                       {% endfor %}
+                    </td> 
+                {% else %}
+                    <td>No student in this class</td>
+                {% endif %}
+                {% if SH.isLogOn() %}
+                <td>
+                    <a href = "/deleteThing/class/{{Class.id}}">
+                        <button class="button-24" role="button">Delete</button>
+                    </a>
+                    <a href = "/updateThing/class/{{Class.id}}">
+                        <button class="button-24" role="button">Edit</button>
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+</div>
+<br>
+{% if SH.isLogOn() %}
+<a href = '/CreateNewClass'>
+    <button class="button-55" role="button">Create Subject</button>
+</a>
+{% endif %}
+{% endblock %}

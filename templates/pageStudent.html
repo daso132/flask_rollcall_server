@@ -7,35 +7,65 @@
 
 
 {% block body %} 
-    <h1> DANH SÁCH SINH VIÊN </h1>
+    <h1> LIST OF STUDENTS </h1>
 <div class = "content"> 
     <table>
         <tr>
             <th>MSSV</th>
-            <th>Họ và tên</th>
+            <th>Name</th>
+            <th>Class</th>
             <th>RFID</th>
-            <th>action</th>
+            {% if SH.isLogOn() %}
+            <th>Option</th>
+            {% endif %}
         </tr>
         {% for Student in Students %}
             <tr>
                 <td>{{ Student.MSSV }}</td>
                 <td>{{ Student.name }}</td>  
+                {% if Student.ClassData %}
                 <td>
+                    {% for c in Student.ClassData%}
+                    {{ c.id }}
+                    <br>
+                    {% endfor %}
+                </td> 
+                {% else %}
+                    <td>Haven't attended any classes yet</td>
+                {% endif %}
+                {% if Student.RFID %}
+                    <td>
                     {% for s in Student.RFID%}
                     {{ s.id }}
                     <br>
                     {% endfor %}
-                </td> 
+                    </td> 
+                {% else %}
+                    <td>No RFID linked</td>
+                {% endif %}
+                {% if SH.isLogOn() %}
                 <td>
-                    <a href = '/deleteThing/student/{{Student.MSSV}}'>xóa</a>
+                    <a href = '/deleteThing/student/{{Student.MSSV}}'>
+                        <button class="button-24" role="button">Delete</button>
+                    </a>
+                    <a href = '/updateThing/student/{{Student.MSSV}}'>
+                        <button class="button-24" role="button">Edit</button>
+                    </a>
                     <br>
-                    <a href = '/updateThing/student/{{Student.MSSV}}'>sửa</a>
+                    <a href = '/addThing/student/{{Student.MSSV}}'>
+                        <button class="button-24" role="button">Add To Subject</button>
+                    </a>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
     <br>
 </div>
 <br>
-<a href = '/CreateNewStudent'>tạo sinh viên mới</a>
+{% if SH.isLogOn() %}
+<a href = '/CreateNewStudent'>
+    <button class="button-55" role="button">Create student</button>
+</a>
+{% endif %}
 {% endblock %}

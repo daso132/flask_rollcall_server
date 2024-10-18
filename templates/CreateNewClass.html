@@ -5,9 +5,10 @@
 <h1>STUDENT CREATER PAGE</h1>
 <form method="POST" action="">
     {{form.hidden_tag()}}
-    {{form.id(value=teacher_to_update.id)}}
-    {{form.name(value=teacher_to_update.name)}}
-    {{form.submit(value = "hoàn thành" )}}
+    {{form.id}}
+    {{form.name}}
+    {{form.teacher}}
+    {{form.submit}}
 </form>
 <ul class="error">
 {% if form.id.errors %}
@@ -17,6 +18,11 @@
 {% endif %}
 {% if form.name.errors %}
     {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+{% endif %}
+{% if form.teacher.errors %}
+    {% for error in form.teacher.errors %}
         <li>{{ error }}</li>
     {% endfor %}
 {% endif %}
